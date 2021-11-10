@@ -1,0 +1,35 @@
+server:
+  port: 8555
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: neo_route
+          uri: http://localhost:8011
+          predicates:
+            - Path=/a/account/2
+          filters:
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/inCaseOfFailureUseThis
+
+#        - id: CircuitBreaker-test
+#            uri: http://localhost:8011
+#            predicates:
+#              - Path=/a/account/2
+#            filters:
+#              - name: CircuitBreaker
+#                args:
+#                  name: myCircuitBreaker
+#                  fallbackUri: forward:/myfallback
+#
+#        - id: CircuitBreaker-test-delay
+#            uri: http://localhost:8011
+#            predicates:
+#              - Path=/a/account/1
+#            filters:
+#              - name: CircuitBreaker
+#                args:
+#                  name: fallbackcmd
+#                  fallbackUri: forward:/myfallback
